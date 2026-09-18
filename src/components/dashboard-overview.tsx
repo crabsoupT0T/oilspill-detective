@@ -54,23 +54,70 @@ export function Overview({
         <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3">
           <h2 className="text-base font-semibold md:text-lg">Sentinel-1 SAR · Spill & AIS</h2>
           <div className="flex flex-wrap items-center gap-2">
-            <button type="button" className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-line px-3 text-sm" onClick={() => printCase(slick, suspects, gfwOn)}>
+            <button
+              type="button"
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-line px-3 text-sm"
+              onClick={() => printCase(slick, suspects, gfwOn)}
+            >
               <FileDown className="size-4" />
               Case file
             </button>
             <div className="flex rounded-lg bg-rail p-0.5">
-              <button type="button" className={cn("rounded-md px-3 py-1.5 text-sm", !forecast ? "bg-accent text-white" : "text-muted")} onClick={() => setForecast(false)}>
+              <button
+                type="button"
+                className={cn("rounded-md px-3 py-1.5 text-sm", !forecast ? "bg-accent text-white" : "text-muted")}
+                onClick={() => setForecast(false)}
+              >
                 Current Location
               </button>
-              <button type="button" className={cn("rounded-md px-3 py-1.5 text-sm", forecast ? "bg-accent text-white" : "text-muted")} onClick={() => setForecast(true)}>
+              <button
+                type="button"
+                className={cn("rounded-md px-3 py-1.5 text-sm", forecast ? "bg-accent text-white" : "text-muted")}
+                onClick={() => setForecast(true)}
+              >
                 Forecast (72h)
               </button>
             </div>
           </div>
         </div>
         <div className="relative min-h-[280px] flex-1 md:min-h-[360px]">
-          <ClientSpillMap slick={slick} suspects={suspects} forecast={forecast} clock={clock} hoursBack={hoursBack} onHoursBack={setHoursBack} layers={layers} liveShips={liveShips} sarItem={sarItem} />
-          <select className="absolute bottom-28 left-3 z-20 rounded-md border border-line bg-card/90 px-2 py-1.5 text-xs" value={slick.id} onChange={(e) => setSlickId(e.target.value)} aria-label="Select slick">
+          <ClientSpillMap
+            slick={slick}
+            suspects={suspects}
+            forecast={forecast}
+            clock={clock}
+            hoursBack={hoursBack}
+            onHoursBack={setHoursBack}
+            layers={layers}
+            liveShips={liveShips}
+            sarItem={sarItem}
+          />
+          <div className="pointer-events-none absolute right-3 top-3 z-20 rounded-lg border border-line bg-card/90 px-2.5 py-2 text-[11px] text-muted">
+            <p>
+              <span className="mr-1.5 inline-block h-0.5 w-3 bg-[#6b3d8a] align-middle" /> Oil slick
+            </p>
+            <p>
+              <span className="mr-1.5 inline-block h-0.5 w-3 bg-[#ff3b3b] align-middle" /> Top suspect
+            </p>
+            <p>
+              <span className="mr-1.5 inline-block size-1.5 rounded-full bg-[#ff3b3b] align-middle" /> Source at origin
+            </p>
+            <p>
+              <span className="mr-1.5 inline-block size-1.5 rounded-full bg-[#8fd4ff] align-middle" /> Later transit through spread
+            </p>
+            <p>
+              <span className="mr-1.5 inline-block size-1.5 rounded-full bg-[#7a90a8] align-middle" /> Near miss
+            </p>
+            <p>
+              <span className="mr-1.5 inline-block h-0.5 w-3 bg-[#7cff6b] align-middle" /> Drift forecast
+            </p>
+          </div>
+          <select
+            className="absolute bottom-28 left-3 z-20 rounded-md border border-line bg-card/90 px-2 py-1.5 text-xs"
+            value={slick.id}
+            onChange={(e) => setSlickId(e.target.value)}
+            aria-label="Select slick"
+          >
             {SLICKS.map((s) => (
               <option key={s.id} value={s.id}>
                 {s.id} · {REGIONS[s.region].label}
@@ -101,10 +148,25 @@ export function Overview({
             <p className="text-4xl font-bold tabular-nums">{slick.areaKm2.toFixed(1)} km²</p>
             <p className="mt-3 text-sm text-muted">Model Confidence</p>
             <p className="text-4xl font-bold tabular-nums text-good">{(slick.confidence * 100).toFixed(1)}%</p>
-            <p className="mt-3 text-sm">
+            <hr className="my-3 border-line" />
+            <p className="text-sm">
               Top Candidate: <span className="font-semibold">{top?.vessel.name ?? "—"}</span>
             </p>
-            <button type="button" className="mt-3 text-xs text-accent underline decoration-white/20" onClick={() => downloadCase(slick, suspects, gfwOn)}>
+            {top && (
+              <p className="mt-1 text-xs text-muted">
+                Score {(top.score * 100).toFixed(0)} · {top.reasons[0]}
+              </p>
+            )}
+            {suspects[1] && (
+              <p className="mt-1 text-xs text-muted">
+                Runner-up {suspects[1].vessel.name} ({(suspects[1].score * 100).toFixed(0)})
+              </p>
+            )}
+            <button
+              type="button"
+              className="mt-3 text-xs text-accent underline decoration-white/20"
+              onClick={() => downloadCase(slick, suspects, gfwOn)}
+            >
               Download HTML case file
             </button>
           </section>
