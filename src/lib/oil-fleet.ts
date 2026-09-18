@@ -123,7 +123,7 @@ function distPointSegKm(p: [number, number], a: [number, number], b: [number, nu
   const dx = b[1] - a[1];
   const dy = b[0] - a[0];
   const len2 = dx * dx + dy * dy || 1e-9;
-  const t = Math.max(0, Math.min(1, ((p[1] - a[1]) * dx + (p[0] - a[1]) * dy) / len2));
+  const t = Math.max(0, Math.min(1, ((p[1] - a[1]) * dx + (p[0] - a[0]) * dy) / len2));
   return haversineKm(p, [a[0] + t * dy, a[1] + t * dx]);
 }
 
@@ -167,7 +167,6 @@ function shiftLane(lane: [number, number][], kmPerp: number): [number, number][]
   });
 }
 
-/** AIS on water lanes whose tracks crossed the slick or passed within 18 km. */
 export function fleetThatPassed(slick: Slick, want = 24): TrafficShip[] {
   const r = rng(hashStr(`${slick.id}:pass`));
   const lanes = SEA_LANES[slick.region];
