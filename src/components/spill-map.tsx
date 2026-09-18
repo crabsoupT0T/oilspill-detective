@@ -4,8 +4,9 @@ import { WINDOW_H } from "@/lib/ais-buffer";
 import type { Suspect } from "@/lib/scoring";
 import type { LiveShip } from "@/lib/ais-live";
 import { TimeDial } from "@/components/time-dial";
-import { applyBase, applyTime, paintLive, seed, type MapInst } from "./spill-map-draw";
+import { applyBase, type MapInst } from "./spill-map-draw";
 import type { MapLayers as DrawLayers } from "./spill-map-draw";
+import { applyTime, paintLive, seed } from "./spill-map-live";
 
 export type MapLayers = DrawLayers;
 
@@ -43,18 +44,15 @@ export function SpillMap({
   useEffect(() => {
     if (!el.current) return;
     let cancelled = false;
-
     void (async () => {
       const L = (await import("leaflet")).default;
       await import("leaflet/dist/leaflet.css");
       if (cancelled || !el.current) return;
-
       const map = L.map(el.current, {
         zoomControl: true,
         attributionControl: false,
         worldCopyJump: true,
       }).setView([propsRef.current.slick.lat, propsRef.current.slick.lon], 9);
-
       const inst: MapInst = {
         map,
         layers: L.layerGroup().addTo(map),
@@ -74,7 +72,6 @@ export function SpillMap({
       window.setTimeout(() => inst.map.invalidateSize(), 80);
       (inst as MapInst & { ro?: ResizeObserver }).ro = ro;
     })();
-
     return () => {
       cancelled = true;
       (mapRef.current as (MapInst & { ro?: ResizeObserver }) | null)?.ro?.disconnect();
@@ -116,18 +113,10 @@ export function SpillMap({
     <>
       <div ref={el} className="absolute inset-0 z-0 min-h-[280px]" aria-label="Spill location map" />
       <div className="absolute left-3 top-3 z-20 flex rounded-lg border border-line bg-card/90 p-0.5 text-xs">
-        <button
-          type="button"
-          className={`rounded-md px-2.5 py-1.5 ${mode === "sar" ? "bg-accent text-white" : "text-muted"}`}
-          onClick={() => setMode("sar")}
-        >
+        <button type="button" className={`rounded-md px-2.5 py-1.5 ${mode === "sar" ? "bg-accent text-white" : "text-muted"}`} onClick={() => setMode("sar")}>
           Sentinel-1 SAR
         </button>
-        <button
-          type="button"
-          className={`rounded-md px-2.5 py-1.5 ${mode === "optical" ? "bg-accent text-white" : "text-muted"}`}
-          onClick={() => setMode("optical")}
-        >
+        <button type="button" className={`rounded-md px-2.5 py-1.5 ${mode === "optical" ? "bg-accent text-white" : "text-muted"}`} onClick={() => setMode("optical")}>
           Optical
         </button>
       </div>
@@ -137,36 +126,6 @@ export function SpillMap({
           <span>
             {hoursBack < 0.12 ? "Live AIS" : `Replay −${hoursBack.toFixed(0)}h`} UTC
             {scene && mode === "sar" ? ` · S1 ${scene.when.slice(0, 10)}` : ""}
-          </span>
-          <span className="ml-auto">
-            <a className="underline decoration-white/20 hover:text-fg" href="https://leafletjs.com" target="_blank" rel="noreferrer">
-              Leaflet
-            </a>
-            {" · "}
-            {mode === "sar" ? (
-              <>
-                Contains modified{" "}
-                <a className="underline decoration-white/20 hover:text-fg" href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus" target="_blank" rel="noreferrer">
-                  Copernicus Sentinel-1
-                </a>{" "}
-                data ·{" "}
-                <a className="underline decoration-white/20 hover:text-fg" href="https://planetarycomputer.microsoft.com" target="_blank" rel="noreferrer">
-                  Planetary Computer
-                </a>
-                {" · "}
-                <a className="underline decoration-white/20 hover:text-fg" href="https://globalfishingwatch.org" target="_blank" rel="noreferrer">
-                  Global Fishing Watch
-                </a>
-                {" · "}
-                <a className="underline decoration-white/20 hover:text-fg" href="https://aisstream.io/" target="_blank" rel="noreferrer">
-                  AISStream
-                </a>
-              </>
-            ) : (
-              <a className="underline decoration-white/20 hover:text-fg" href="https://www.esri.com" target="_blank" rel="noreferrer">
-                Tiles © Esri
-              </a>
-            )}
           </span>
         </p>
       </div>
