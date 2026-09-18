@@ -181,3 +181,8 @@ export const VESSELS: Vessel[] = [
   { mmsi: "256846000", imo: "9287710", name: "VALLETTA STAR", flag: "MT", type: "tanker", class: "Handymax products" },
   { mmsi: "353118000", imo: "9410029", name: "DARK HORIZON", flag: "PA", type: "tanker", class: "Aframax", dark: true },
 ];
+
+export { SLICKS, SAR_SCENES } from "./oil-slicks";
+export { TRACKS, AIS_GAPS } from "./oil-tracks";
+export type { TrafficShip } from "./oil-fleet";
+export { fleetThatPassed, alongPath, routeMissKm } from "./oil-fleet";
