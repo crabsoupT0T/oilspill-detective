@@ -2,24 +2,29 @@
 
 Satellite oil-slick detections fused with AIS tracks to rank likely sources.
 
+Live demo: [oilguard-ai.grok.me](https://oilguard-ai.grok.me)
+
 ## Run locally
 
 ```bash
 npm install
+cp .env.example .env   # optional keys
 npm run dev
 ```
 
-Open the URL Vite prints (default port 8080).
+Open http://localhost:8080
 
 ## Live data
 
-- **Sentinel-1 radar** — Microsoft Planetary Computer (no key)
-- **AISStream** — paste a free key in **Settings**, or set `AISSTREAM_API_KEY` in `.env`
-- **Global Fishing Watch** — optional token in Settings, or `GFW_API_ACCESS_TOKEN`
+| Source | Key |
+|---|---|
+| Sentinel-1 radar | none (Planetary Computer) |
+| AISStream coastal ships | paste in **Settings**, or `AISSTREAM_API_KEY` |
+| Global Fishing Watch | optional, `GFW_API_ACCESS_TOKEN` |
 
-Copy `.env.example` to `.env`. Do not commit keys. Nothing under `.data/` is committed.
+Do not commit `.env` or anything in `.data/`.
 
-Triage scores are not legal proof.
+Scores are triage, not legal proof.
 
 ## Stack
 
