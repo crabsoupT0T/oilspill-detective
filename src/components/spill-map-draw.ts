@@ -2,8 +2,6 @@ import {
   SAR_SCENES,
   type Slick,
 } from "@/lib/oil-data";
-import type { LiveShip } from "@/lib/ais-live";
-import type { Suspect } from "@/lib/scoring";
 
 export type MapLayers = {
   slick: boolean;
@@ -97,6 +95,3 @@ export function sheen(poly: [number, number][], halfWidthDeg: number): [number, 
   }
   return [...left, ...right.reverse()];
 }
-
-export { seed, paintLive, applyTime } from "./spill-map-live";
-export type { Suspect, LiveShip };
