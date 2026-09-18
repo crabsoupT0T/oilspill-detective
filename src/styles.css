@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #07101c;
+  --color-rail: #08111e;
+  --color-card: #101b2d;
+  --color-fg: #e8eef6;
+  --color-muted: #8b9bb3;
+  --color-line: #24344c;
+  --color-accent: #3b6dff;
+  --color-good: #3ddc8a;
+  --color-nav-active: #1a2f6b;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --radius-lg: 0.75rem;
+  --radius-xl: 0.875rem;
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--color-bg);
+    color: var(--color-fg);
+  }
+}
+
+.light-theme {
+  --color-bg: #e8eef5;
+  --color-rail: #0a1424;
+  --color-card: #ffffff;
+  --color-fg: #122033;
+  --color-muted: #5d6f86;
+  --color-line: #d5deea;
+  --color-nav-active: #1a2f6b;
+}
+
+.leaflet-container {
+  height: 100%;
+  width: 100%;
+  background: #0a0c10;
+  font-family: inherit;
+}
+.sar-fallback {
+  filter: grayscale(1) contrast(1.25) brightness(0.72);
+}
+.leaflet-top.leaflet-left {
+  top: 3.25rem;
+}
+
+.leaflet-div-icon.ship-mark,
+.leaflet-marker-icon.ship-mark {
+  background: transparent !important;
+  border: none !important;
+  overflow: visible !important;
+  box-shadow: none !important;
+}
+.ship-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 4px rgb(255 255 255 / 0.25);
+  flex-shrink: 0;
+}
+.ship-dot.live {
+  box-shadow: 0 0 0 4px rgb(143 212 255 / 0.35);
+  animation: ais-pulse 1.8s ease-out infinite;
+}
+@keyframes ais-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(143 212 255 / 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 8px rgb(143 212 255 / 0);
+  }
+}
+.ship-name {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  text-shadow: 0 1px 2px #000, 0 0 6px #000;
+  white-space: nowrap;
+}
+.slick-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #e8d4ff;
+  background: rgb(28 10 36 / 0.9);
+  border: 1px solid #9b6bc4;
+  border-radius: 4px;
+  padding: 2px 6px;
+  white-space: nowrap;
+  text-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
