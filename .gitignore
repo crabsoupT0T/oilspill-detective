@@ -1,0 +1,14 @@
+node_modules
+.output
+.vinxi
+.vercel
+.data
+.env
+.env.*
+!.env.example
+dist
+.DS_Store
+*.log
+/tmp
+screenshots
+artifacts
